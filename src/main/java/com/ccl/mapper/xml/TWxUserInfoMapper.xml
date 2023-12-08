@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ccl.mapper.TWxUserInfoMapper">
+
+    <!-- 根据unionId查询用户信息 -->
+    <select id="selectWxUserInfoByUnionId" resultType="com.ccl.entity.wexin.TWxUserInfoVo">
+        select
+            *
+        from
+            t_wx_user_info
+        where
+            union_id = #{unionId}
+    </select>
+
+    <!-- 根据UnionId修改用户信息 -->
+    <update id="updWxUserInfoByUnionId" parameterType="com.ccl.entity.wexin.TWxUserInfoVo">
+        update t_wx_user_info
+        <set>
+            <if test="appletOpenid != null and appletOpenid != ''">
+                applet_openid = #{appletOpenid},
+            </if>
+            <if test="publicOpenid != null and publicOpenid != ''">
+                public_openid = #{publicOpenid},
+            </if>
+            <if test="nickname != null and nickname != ''">
+                nickname = #{nickname},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="city != null and city != ''">
+                city = #{city},
+            </if>
+            <if test="country != null and country != ''">
+                country = #{country},
+            </if>
+            <if test="province != null and province != ''">
+                province = #{province},
+            </if>
+            <if test="language != null and language != ''">
+                language = #{language},
+            </if>
+            <if test="headimgurl != null and headimgurl  != ''">
+                headimgurl = #{headimgurl},
+            </if>
+            <if test="subscribeTime != null">
+                subscribe_time = #{subscribeTime},
+            </if>
+            <if test="unionId != null and unionId != ''">
+                union_id = #{unionId},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId},
+            </if>
+            <if test="tagidList != null and tagidList != ''">
+                tagid_list = #{tagidList},
+            </if>
+            <if test="subscribeScene != null and subscribeScene != ''">
+                subscribe_scene = #{subscribeScene},
+            </if>
+            <if test="qrScene != null and qrScene != ''">
+                qr_scene = #{qrScene},
+            </if>
+            <if test="qrSceneStr != null and qrSceneStr != ''">
+                qr_scene_str = #{qrSceneStr},
+            </if>
+            <if test="isSubscribe != null">
+                is_subscribe = #{isSubscribe},
+            </if>
+            <if test="createTime != null ">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null ">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where union_id = #{unionId}
+    </update>
+
+    <insert id="insertWxUserInfo" useGeneratedKeys="true" keyProperty="wxUserId"  keyColumn="wx_user_id" parameterType="com.ccl.entity.wexin.TWxUserInfoVo">
+        insert into t_wx_user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wxUserId != null">
+                wx_user_id,
+            </if>
+            <if test="appletOpenid != null and appletOpenid != ''">
+                applet_openid,
+            </if>
+            <if test="publicOpenid != null and publicOpenid != ''">
+                public_openid,
+            </if>
+            <if test="nickname != null and nickname != ''">
+                nickname,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="city != null and city != ''">
+                city,
+            </if>
+            <if test="country != null and country != ''">
+                country,
+            </if>
+            <if test="province != null and province != ''">
+                province,
+            </if>
+            <if test="language != null and language != ''">
+                language,
+            </if>
+            <if test="headimgurl != null and headimgurl  != ''">
+                headimgurl,
+            </if>
+            <if test="subscribeTime != null">
+                subscribe_time,
+            </if>
+            <if test="unionId != null and unionId != ''">
+                union_id,
+            </if>
+            <if test="remark != null and remark != ''">
+                remark,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="tagidList != null and tagidList != ''">
+                tagid_list,
+            </if>
+            <if test="subscribeScene != null and subscribeScene != ''">
+                subscribe_scene,
+            </if>
+            <if test="qrScene != null and qrScene != ''">
+                qr_scene,
+            </if>
+            <if test="qrSceneStr != null and qrSceneStr != ''">
+                qr_scene_str,
+            </if>
+            <if test="isSubscribe != null">
+                is_subscribe,
+            </if>
+            <if test="createTime != null ">
+                create_time,
+            </if>
+            <if test="updateTime != null ">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appletOpenid != null and appletOpenid != ''">
+                #{appletOpenid},
+            </if>
+            <if test="publicOpenid != null and publicOpenid != ''">
+                #{publicOpenid},
+            </if>
+            <if test="nickname != null and nickname != ''">
+                #{nickname},
+            </if>
+            <if test="sex != null">
+               #{sex},
+            </if>
+            <if test="city != null and city != ''">
+                #{city},
+            </if>
+            <if test="country != null and country != ''">
+                #{country},
+            </if>
+            <if test="province != null and province != ''">
+               #{province},
+            </if>
+            <if test="language != null and language != ''">
+                #{language},
+            </if>
+            <if test="headimgurl != null and headimgurl  != ''">
+                #{headimgurl},
+            </if>
+            <if test="subscribeTime != null">
+                #{subscribeTime},
+            </if>
+            <if test="unionId != null and unionId != ''">
+                #{unionId},
+            </if>
+            <if test="remark != null and remark != ''">
+                #{remark},
+            </if>
+            <if test="groupId != null">
+                #{groupId},
+            </if>
+            <if test="tagidList != null and tagidList != ''">
+               #{tagidList},
+            </if>
+            <if test="subscribeScene != null and subscribeScene != ''">
+               #{subscribeScene},
+            </if>
+            <if test="qrScene != null and qrScene != ''">
+                #{qrScene},
+            </if>
+            <if test="qrSceneStr != null and qrSceneStr != ''">
+                #{qrSceneStr},
+            </if>
+            <if test="isSubscribe != null">
+                #{isSubscribe},
+            </if>
+            <if test="createTime != null ">
+                #{createTime},
+            </if>
+            <if test="updateTime != null ">
+                #{updateTime},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 根据member查询用户信息 -->
+    <select id="selectWxUserInfoByMobile" resultType="com.ccl.entity.wexin.TWxUserInfoVo">
+       SELECT
+            t2.*
+        FROM
+            member t
+            LEFT JOIN t_wx_user_info t2 ON t.wx_user_id = t2.wx_user_id
+        WHERE
+            t.mobile = #{mobile}
+            AND t.is_deleted = 0
+    </select>
+
+    <!-- 根据publicOpenid修改用户信息 -->
+    <update id="updWxUserInfoByPublicOpenid" parameterType="com.ccl.entity.wexin.TWxUserInfoVo">
+        update t_wx_user_info
+        <set>
+            <if test="isSubscribe != null">
+                is_subscribe = #{isSubscribe},
+            </if>
+            <if test="updateTime != null ">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where public_openid = #{publicOpenid}
+    </update>
+</mapper>

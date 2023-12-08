@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ccl.mapper.WeChatMenuMapper">
+
+    <!-- 查询可用模板信息 -->
+    <select id="selectWeChatMenuList" resultType="com.ccl.entity.wexin.WeChatMenu">
+    SELECT
+        *
+    FROM
+        wechat_menu
+    WHERE
+        is_deleted = 0
+    </select>
+
+    <!-- 查询一级菜单信息 -->
+    <select id="selectFirstWeChatMenu" resultType="com.ccl.entity.vo.WeChatMenuVo">
+    SELECT
+        *
+    FROM
+        wechat_menu
+    WHERE
+        is_deleted = 0
+        AND menu_level = 0
+    ORDER BY menu_order ASC
+    </select>
+
+    <!-- 查询二级菜单信息 -->
+    <select id="selectSecondWeChatMenu" resultType="com.ccl.entity.vo.WeChatMenuVo">
+    SELECT
+        *
+    FROM
+        wechat_menu
+    WHERE
+        is_deleted = 0
+        AND menu_level != 0
+    ORDER BY menu_order ASC
+    </select>
+</mapper>
