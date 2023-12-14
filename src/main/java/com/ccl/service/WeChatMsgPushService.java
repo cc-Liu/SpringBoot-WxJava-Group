@@ -1,10 +1,7 @@
 package com.ccl.service;
 
 
-import com.ccl.entity.wexin.TWxUserInfo;
-import com.ccl.entity.wexin.TemplateParams;
-import com.ccl.entity.wexin.WeChatMsgPush;
-import com.ccl.entity.wexin.WxConfigParams;
+import com.ccl.entity.wexin.*;
 import com.ccl.util.R;
 
 public interface WeChatMsgPushService {
@@ -21,7 +18,7 @@ public interface WeChatMsgPushService {
     //公众号消息推送(参数组装)
     R weChatMpeMsgPush(WeChatMsgPush weChatMsgPush);
 
-    WxConfigParams selectWxConfigValue();
+    R weChatMaMessagePush(WeChatMaMessageRequest weChatMaMessageRequest);
 
     R wxPublicMsgPushTest(WeChatMsgPush weChatMsgPush);
 

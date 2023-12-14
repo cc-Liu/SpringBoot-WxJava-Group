@@ -1,6 +1,7 @@
 package com.ccl.controller;
 
 import com.ccl.entity.wexin.TWxUserInfo;
+import com.ccl.entity.wexin.WeChatMaMessageRequest;
 import com.ccl.entity.wexin.WeChatMsgPush;
 import com.ccl.entity.wexin.WxConfigParams;
 import com.ccl.service.WeChatMsgPushService;
@@ -48,7 +49,7 @@ public class WeChatMsgPushController {
     @ApiOperation("查询微信配置并且缓存到redis中")
     @PostMapping("/selectWxConfigValue")
     public R selectWxConfigValue() {
-        WxConfigParams wxConfigParams = weChatMsgPushService.selectWxConfigValue();
+        WxConfigParams wxConfigParams = wxConfigService.selectWxConfigValue();
         return R.ok().resultData(wxConfigParams);
     }
 
@@ -64,6 +65,19 @@ public class WeChatMsgPushController {
     public R weChatMpeMsgPush(@RequestBody WeChatMsgPush weChatMsgPush) {
         return weChatMsgPushService.weChatMpeMsgPush(weChatMsgPush);
     }
+
+    /**
+     * @Author liuc
+     * @Description 小程序服务订阅通知
+     * @Date 2023/12/12 14:55
+     * @Param [weChatMaMessageRequest]
+     * @return com.furen.common.utils.R
+     **/
+    @PostMapping("/weChatMaMessagePush")
+    public R weChatMaMessagePush(@RequestBody WeChatMaMessageRequest weChatMaMessageRequest) {
+        return weChatMsgPushService.weChatMaMessagePush(weChatMaMessageRequest);
+    }
+
 
     @ApiOperation("微信公众号消息推送测试方法")
     @PostMapping("/weChatMpeMsgPushTest")

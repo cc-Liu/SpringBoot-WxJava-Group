@@ -1,13 +1,12 @@
 package com.ccl.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
+import cn.binarywang.wx.miniapp.api.WxMaService;
+import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.ccl.constant.WeChatTemplateTypeEnum;
-import com.ccl.constant.WechatInterface;
-import com.ccl.entity.vo.BaseSysCodeVo;
 import com.ccl.entity.wexin.*;
 import com.ccl.enums.PayTypeEnum;
 import com.ccl.redis.RedisClient;
@@ -15,6 +14,7 @@ import com.ccl.service.TWxUserInfoService;
 import com.ccl.service.WeChatMsgPushService;
 import com.ccl.service.WxConfigService;
 import com.ccl.util.R;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -29,9 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Transactional(rollbackFor = Exception.class)
@@ -47,6 +44,9 @@ public class WeChatMsgPushServiceImpl implements WeChatMsgPushService {
 
     @Resource
     private WxMpService wxService;
+
+    @Resource
+    private WxMaService wxMaService;
 
     @Resource
     private WxConfigService wxConfigService;
@@ -199,21 +199,30 @@ public class WeChatMsgPushServiceImpl implements WeChatMsgPushService {
 
     /**
      * @Author liuc
-     * @Description 查询微信配置信息，如果没有则查询出来缓存到redis中
-     * @Date 2022/3/24 16:12
-     * @Param []
-     * @return com.furen.member.weixin.WxConfigParams
+     * @Description 小程序服务订阅通知
+     * @Date 2023/12/12 14:54
+     * @Param [weChatMaMessageRequest]
+     * @return com.furen.common.utils.R
      **/
-    public WxConfigParams selectWxConfigValue() {
-        Map<Object, Object> mapData = redisClient.getMapData(WechatInterface.SYS_CONFIG, WechatInterface.WX_CONFIG);
-        if(mapData == null || mapData.size() <= 0){
-            List<BaseSysCodeVo> wxDataList = new ArrayList<>();//从redis中取出微信配置
-            Map<String, Object> map = Optional.ofNullable(wxDataList).orElse(new ArrayList<>()).stream().collect(Collectors.toMap(BaseSysCodeVo::getCode, BaseSysCodeVo::getName));
-            redisClient.addMap("sys_config",WechatInterface.WX_CONFIG, map);
-            mapData = redisClient.getMapData(WechatInterface.SYS_CONFIG, WechatInterface.WX_CONFIG);
+    @Override
+    public R weChatMaMessagePush(WeChatMaMessageRequest weChatMaMessageRequest) {
+        log.info("服务订阅通知参数:{}", JSONUtil.parse(weChatMaMessageRequest));
+        try {
+            wxMaService.getMsgService().sendSubscribeMsg(WxMaSubscribeMessage.builder()
+                    .templateId(weChatMaMessageRequest.getTemplateId())
+                    .data(Lists.newArrayList(
+                            new WxMaSubscribeMessage.MsgData("thing5", weChatMaMessageRequest.getKeyWordOne()),
+                            new WxMaSubscribeMessage.MsgData("character_string6", weChatMaMessageRequest.getKeyWordTwo()),
+                            new WxMaSubscribeMessage.MsgData("thing13", weChatMaMessageRequest.getKeyWordThree()),
+                            new WxMaSubscribeMessage.MsgData("time2", weChatMaMessageRequest.getKeyWordFour()),
+                            new WxMaSubscribeMessage.MsgData("time3", weChatMaMessageRequest.getKeyWordFive()))
+                    )
+                    .toUser(weChatMaMessageRequest.getOpenid())
+                    .build());
+        } catch (WxErrorException e) {
+            e.printStackTrace();
         }
-        WxConfigParams wxConfigParams = BeanUtil.fillBeanWithMap(mapData, new WxConfigParams(), true, false);
-        return wxConfigParams;
+        return R.ok();
     }
 
     @Override

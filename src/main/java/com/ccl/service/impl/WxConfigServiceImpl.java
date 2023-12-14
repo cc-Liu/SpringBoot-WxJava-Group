@@ -30,6 +30,25 @@ public class WxConfigServiceImpl implements WxConfigService {
 
     /**
      * @Author liuc
+     * @Description 查询微信配置信息，如果没有则查询出来缓存到redis中
+     * @Date 2022/3/24 16:12
+     * @Param []
+     * @return com.furen.member.weixin.WxConfigParams
+     **/
+    public WxConfigParams selectWxConfigValue() {
+        Map<Object, Object> mapData = redisClient.getMapData(WechatInterface.SYS_CONFIG, WechatInterface.WX_CONFIG);
+        if(mapData == null || mapData.size() <= 0){
+            List<BaseSysCodeVo> wxDataList = new ArrayList<>();//从redis中取出微信配置
+            Map<String, Object> map = Optional.ofNullable(wxDataList).orElse(new ArrayList<>()).stream().collect(Collectors.toMap(BaseSysCodeVo::getCode, BaseSysCodeVo::getName));
+            redisClient.addMap("sys_config",WechatInterface.WX_CONFIG, map);
+            mapData = redisClient.getMapData(WechatInterface.SYS_CONFIG, WechatInterface.WX_CONFIG);
+        }
+        WxConfigParams wxConfigParams = BeanUtil.fillBeanWithMap(mapData, new WxConfigParams(), true, false);
+        return wxConfigParams;
+    }
+
+    /**
+     * @Author liuc
      * @Description 查询微信配置信息集合，如果没有则查询出来缓存到redis中
      * @Date 2023/9/18 10:31
      * @Param []

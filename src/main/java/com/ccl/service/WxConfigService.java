@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface WxConfigService {
 
+    WxConfigParams selectWxConfigValue();
+
     List<WxConfigParams> selectWxConfigValueList();
 
     WxConfigParams selectWxConfigBySiteId(Integer siteId);
